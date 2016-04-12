@@ -12,15 +12,24 @@ namespace OpenDayApplication.Model.Managers
 {
   public class ClassesManager
   {
+    
     public List<Class> GetClasses()
     {
       var _classes = new List<Class>();
-      using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
-      {
-        _classes = dataContext.Classes.ToList();
-      }
+            try
+            {
+                using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
+                {
+                    _classes = dataContext.Classes.ToList();
+                }
+            }
+            catch
+            {
+                System.Windows.MessageBox.Show("Brak połączenia z bazą danych!");
+            }
       return _classes;
     }
+    
     public void AddClass(Class _class)
     {
       using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
@@ -31,12 +40,19 @@ namespace OpenDayApplication.Model.Managers
     }
     public void DeleteClass(Class _class)
     {
-      using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
-      {
-        dataContext.Classes.Attach(_class);
-        dataContext.Classes.DeleteOnSubmit(_class);
-        dataContext.SubmitChanges();
-      }
+            try
+            {
+                using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
+                {
+                    dataContext.Classes.Attach(_class);
+                    dataContext.Classes.DeleteOnSubmit(_class);
+                    dataContext.SubmitChanges();
+                }
+            }
+            catch
+            {
+                System.Windows.MessageBox.Show("Brak połączenia z bazą danych!");
+            }
     }
     public void EditClass(Class _class)
     {
