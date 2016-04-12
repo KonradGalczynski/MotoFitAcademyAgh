@@ -99,6 +99,7 @@
     <Compile Include="Viewmodel\ClassesViewModel.cs" />
     <Compile Include="Viewmodel\RoomsViewModel.cs" />
     <Compile Include="Viewmodel\ClientsViewModel.cs" />
+    <Compile Include="Viewmodel\Validators\AddressValidator.cs" />
     <Compile Include="Viewmodel\Validators\WorkerValidator.cs" />
     <Compile Include="Viewmodel\WorkersViewModel.cs" />
     <Compile Include="Viewmodel\WorkPlanViewModel.cs" />

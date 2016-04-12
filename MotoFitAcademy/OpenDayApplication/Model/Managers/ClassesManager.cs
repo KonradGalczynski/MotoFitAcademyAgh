@@ -7,15 +7,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenDayApplication.Model.Database;
+using System.Data.Linq;
+using System;
+using System.Windows;
 
 namespace OpenDayApplication.Model.Managers
 {
-  public class ClassesManager
-  {
-    
-    public List<Class> GetClasses()
+    public class ClassesManager
     {
-      var _classes = new List<Class>();
+    
+        public List<Class> GetClasses()
+        {
+            var _classes = new List<Class>();
             try
             {
                 using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
@@ -27,19 +30,31 @@ namespace OpenDayApplication.Model.Managers
             {
                 System.Windows.MessageBox.Show("Brak połączenia z bazą danych!");
             }
-      return _classes;
-    }
+            return _classes;
+        }
     
-    public void AddClass(Class _class)
-    {
-      using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
-      {
-        dataContext.Classes.InsertOnSubmit(_class);
-        dataContext.SubmitChanges();
-      }
-    }
-    public void DeleteClass(Class _class)
-    {
+        public void AddClass(Class _class)
+        {
+      try {
+                using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
+            {
+
+                    dataContext.Classes.InsertOnSubmit(_class);
+                    dataContext.SubmitChanges();
+
+            }
+
+          }
+            catch (Exception e)
+            {
+
+                MessageBox.Show("Operacja dodaj nie powiodła się");
+
+            }
+        }
+
+        public void DeleteClass(Class _class)
+        {
             try
             {
                 using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
@@ -53,16 +68,23 @@ namespace OpenDayApplication.Model.Managers
             {
                 System.Windows.MessageBox.Show("Brak połączenia z bazą danych!");
             }
-    }
-    public void EditClass(Class _class)
-    {
-      using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
-      {
-        var classToEdit = dataContext.Classes.FirstOrDefault(c => c.ID == _class.ID);
-        classToEdit.Name = _class.Name;
-        classToEdit.Popularity = _class.Popularity;
-        dataContext.SubmitChanges();
-      }
-    }
+        }
+        public void EditClass(Class _class)
+        {
+            try {
+                using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
+                {
+                    var classToEdit = dataContext.Classes.FirstOrDefault(c => c.ID == _class.ID);
+                    classToEdit.Name = _class.Name;
+                    classToEdit.Popularity = _class.Popularity;
+                    dataContext.SubmitChanges();
+                }
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show("Operacja edycji nie powiodła się");
+            }
+            }
   }
+    
 }
