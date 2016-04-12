@@ -20,6 +20,19 @@ namespace OpenDayApplication.Viewmodel
         public ICommand CancelCommand { get; set; }
 
 
+<<<<<<< HEAD
+    public ClientsViewModel()
+    {
+        
+            _clientsManager = GetClientsManager();
+            AddClientCommand = new BaseCommand(AddClient);
+            DeleteClientCommand = new BaseCommand(DeleteClient);
+            SaveCommand = new BaseCommand(SaveChanges);
+            CancelCommand = new BaseCommand(Cancel);
+            RefreshClients();
+       
+    }
+=======
         public Client EditedClient
         {
             get { return _editedClient; }
@@ -47,40 +60,29 @@ namespace OpenDayApplication.Viewmodel
                 OnPropertyChanged("IsClientEditVisible");
             }
         }
+>>>>>>> 769e12e8047eefc5f5535f8f9538329ab2956a70
 
         public ClientsViewModel()
         {
-        
             _clientsManager = GetClientsManager();
             AddClientCommand = new BaseCommand(AddClient);
             DeleteClientCommand = new BaseCommand(DeleteClient);
             SaveCommand = new BaseCommand(SaveChanges);
             CancelCommand = new BaseCommand(Cancel);
             RefreshClients();
-       
         }
 
-        public void AddClient()
-        {
-            IsClientEditVisible = true;
-            EditedClient = new Client();
-        }
-
-        public void DeleteClient()
-        {
+<<<<<<< HEAD
+    public void DeleteClient()
+    {
         try
         {
-            var buttons = MessageBoxButton.YesNo;
-            var question = MessageBoxImage.Question;
-            if (MessageBox.Show("Czy na pewno chcesz usunac klienta?", "Potwierdzenie usuniecia", buttons, question) == MessageBoxResult.Yes)
-            {
             IsClientEditVisible = false;
             if (EditedClient != null && EditedClient.ID != 0)
             {
                 _clientsManager.DeleteClient(EditedClient);
                 RefreshClients();
             }
-        }
         }
         catch
         {
@@ -89,8 +91,38 @@ namespace OpenDayApplication.Viewmodel
 
     }
 
-        public void SaveChanges()
+    public void SaveChanges()
 
+    {
+        
+      _clientsManager.AddClient(EditedClient);
+      IsClientEditVisible = false;
+      RefreshClients();
+    }
+=======
+        public void AddClient()
+        {
+            IsClientEditVisible = true;
+            EditedClient = new Client();
+        }
+
+        public void DeleteClient()
+        {
+            var buttons = MessageBoxButton.YesNo;
+            var question = MessageBoxImage.Question;
+            if (MessageBox.Show("Czy na pewno chcesz usunac klienta?", "Potwierdzenie usuniecia", buttons, question) == MessageBoxResult.Yes)
+            {
+                IsClientEditVisible = false;
+                if (EditedClient != null && EditedClient.ID != 0)
+                {
+                    _clientsManager.DeleteClient(EditedClient);
+                    RefreshClients();
+                }
+            }
+        }
+>>>>>>> 769e12e8047eefc5f5535f8f9538329ab2956a70
+
+        public void SaveChanges()
         {
         Viewmodel.Validators.AddressValidator validator = new Validators.AddressValidator();
         if (!validator.IsValidEmail(EditedClient.Address))
@@ -105,13 +137,9 @@ namespace OpenDayApplication.Viewmodel
         } 
         }
 
-        public void Cancel()
-        {
-            IsClientEditVisible = false;
-        }
-
-        private void RefreshClients()
-        {
+<<<<<<< HEAD
+    private void RefreshClients()
+    {
         try
         {
             Clients = new List<Client>(_clientsManager.GetClients());
@@ -119,7 +147,16 @@ namespace OpenDayApplication.Viewmodel
         catch
         {
             MessageBox.Show("Błąd przy wyświetlaniu listy klientów!!!");
+=======
+        public void Cancel()
+        {
+            IsClientEditVisible = false;
         }
+
+        private void RefreshClients()
+        {
+            Clients = new List<Client>(_clientsManager.GetClients());
+>>>>>>> 769e12e8047eefc5f5535f8f9538329ab2956a70
         }
     }
 }

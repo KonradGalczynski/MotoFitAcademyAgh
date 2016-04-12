@@ -56,20 +56,31 @@ namespace OpenDayApplication.Model.Managers
         }
     public void EditRoom(Room room)
     {
-      try
-      {
+        try
+        {
+            using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
+            {
+                var roomToEdit = dataContext.Rooms.FirstOrDefault(r => r.ID == room.ID);
+                roomToEdit.Name = room.Name;
+                roomToEdit.Capacity = room.Capacity;
+                dataContext.SubmitChanges();
+            }
+        }
+        catch (Exception e)
+        {
+            MessageBox.Show("Operacja Edytuj nie powiodła się");
+        }
+    }
+
+   internal void DeleteRoom(Room EditedRoom)
+    {
         using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
         {
-            var roomToEdit = dataContext.Rooms.FirstOrDefault(r => r.ID == room.ID);
-            roomToEdit.Name = room.Name;
-            roomToEdit.Capacity = room.Capacity;
+            dataContext.Rooms.Attach(EditedRoom);
+            dataContext.Rooms.DeleteOnSubmit(EditedRoom);
             dataContext.SubmitChanges();
         }
-      }
-      catch (Exception e)
-      {
-        MessageBox.Show("Operacja Edytuj nie powiodła się");
-      }
-}
+    } 
+   
   }
 }
