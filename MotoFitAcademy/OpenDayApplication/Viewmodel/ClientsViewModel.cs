@@ -152,16 +152,18 @@ namespace OpenDayApplication.Viewmodel
         else
         {
 
-            if (!IsMailUniq())
-            {
-                MessageBox.Show(" email repeated!", "Email repeated", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-            else
-            {
+            
+            
+            
                 switch (_selectedOperation)
             {
                 case CrudOperation.Create:
+                    if (!IsMailUniq())
+                    {
+                        MessageBox.Show(" email repeated!", "Email repeated", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    } else { 
                     _clientsManager.AddClient(EditedClient);
+                    }
                     break;
                 case CrudOperation.Edit:
                 _clientsManager.EditClient(EditedClient);
@@ -169,7 +171,7 @@ namespace OpenDayApplication.Viewmodel
             }
                 IsClientEditVisible = false;
                 RefreshClients();
-            }
+            
         }
             }
             catch
