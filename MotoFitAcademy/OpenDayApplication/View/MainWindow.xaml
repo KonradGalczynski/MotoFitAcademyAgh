@@ -1,0 +1,27 @@
+﻿<controls:MetroWindow x:Class="OpenDayApplication.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:view="clr-namespace:OpenDayApplication.View"
+        BorderBrush="#41B1E1" ResizeMode="CanMinimize" SizeToContent="WidthAndHeight"             
+        Title="Fitness Club Application" MinHeight="550" MinWidth="820">
+    <Grid>
+        <TabControl>
+            <TabItem Header="Workers" Width="140">
+                <view:WorkersView/>
+            </TabItem>
+            <TabItem Header="Clients" Width="140">
+                <view:ClientsView/>
+            </TabItem>
+            <TabItem Header="Work plan" Width="150">
+                <view:WorkPlanView/>
+            </TabItem>
+            <TabItem Header="Rooms" Width="140">
+                <view:RoomsView/>
+            </TabItem>
+            <TabItem Header="Classes" Width="140">
+                <view:ClassesView/>
+            </TabItem>
+        </TabControl> 
+    </Grid>
+</controls:MetroWindow>

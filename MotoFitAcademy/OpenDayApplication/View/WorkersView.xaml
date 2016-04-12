@@ -1,0 +1,65 @@
+﻿<UserControl x:Class="OpenDayApplication.View.WorkersView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewmodel="clr-namespace:OpenDayApplication.Viewmodel"
+             xmlns:converters="clr-namespace:OpenDayApplication.Converters"
+             xmlns:validationRules="clr-namespace:OpenDayApplication.ValidationRules"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="600">
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <viewmodel:WorkersViewModel/>
+    </UserControl.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="2">
+            <Button Content="Add worker" Command="{Binding AddWorkerCommand}"/>
+            <Button Content="Edit worker" Command="{Binding EditWorkerCommand}"/>
+            <Button Content="Delete worker" Command="{Binding DeleteWorkerCommand}"/>
+        </StackPanel>
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Workers}" Grid.Column="0" Grid.RowSpan="2"
+                  SelectedItem="{Binding EditedWorker}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="NAME" Binding="{Binding Name}" Width="145"/>
+                <DataGridTextColumn Header="SURNAME" Binding="{Binding Surname}" Width="145"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Grid Grid.Row="1" Grid.Column="1" Margin="7,5,0,5" Visibility="{Binding IsWorkerEditVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Name"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Surname"/>
+            <TextBox Grid.Row="0" Grid.Column="1">
+                <TextBox.Text>
+                    <Binding Path="EditedWorker.Name" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <validationRules:StringPropertyValidationRule ValidationStep="RawProposedValue"/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding EditedWorker.Surname}"/>
+            <Button Grid.Row="2" Grid.Column="0" Content="Cancel" Command="{Binding CancelCommand}"/>
+            <Button Grid.Row="2" Grid.Column="1" Content="Save" Command="{Binding SaveCommand}"/>
+        </Grid>
+    </Grid>
+</UserControl>

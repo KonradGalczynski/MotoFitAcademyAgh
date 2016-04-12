@@ -1,0 +1,75 @@
+﻿<UserControl x:Class="OpenDayApplication.View.WorkPlanView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converters="clr-namespace:OpenDayApplication.Converters"
+             xmlns:viewmodels="clr-namespace:OpenDayApplication.Viewmodel"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="700">
+    <UserControl.DataContext>
+        <viewmodels:WorkPlanViewModel/>
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="2">
+            <Button Content="Add" Command="{Binding AddWorkPlanElementCommand}"/>
+            <Button Content="Edit" Command="{Binding EditWorkPlanElementCommand}"/>
+            <Button Content="Delete" Command="{Binding DeleteWorkPlanElementCommand}"/>
+            <Button Content="Create report"/>
+            <Button Content="Show timetable" Command="{Binding ShowTimetableCommand}"/>
+        </StackPanel>
+        <DataGrid ItemsSource="{Binding WorkPlanElements}" Width="650" Grid.Row="1" Grid.Column="0" 
+                  SelectedItem="{Binding EditedWorkPlanElement}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="WORKER" Binding="{Binding Worker.Name}" Width="130"/>
+                <DataGridTextColumn Header="ROOM" Binding="{Binding Room.Name}" Width="120"/>
+                <DataGridTextColumn Header="CLASS" Binding="{Binding Class.Name}" Width="130"/>
+                <DataGridTextColumn Header="DAY" Binding="{Binding DayOfWeek}" Width="90"/>
+                <DataGridTextColumn Header="START TIME" Binding="{Binding StartTime}" Width="90"/>
+                <DataGridTextColumn Header="END TIME" Binding="{Binding EndTime}" Width="90"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Grid Grid.Column="1" Grid.Row="1" Visibility="{Binding IsWorkPlanElementEditVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+              Grid.RowSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Worker" Grid.Row="0" Grid.Column="0"/>
+            <TextBlock Text="Class" Grid.Row="1" Grid.Column="0"/>
+            <TextBlock Text="Room" Grid.Row="2" Grid.Column="0"/>
+            <TextBlock Text="Day of week" Grid.Row="3" Grid.Column="0"/>
+            <TextBlock Text="Start time" Grid.Row="4" Grid.Column="0"/>
+            <TextBlock Text="End time" Grid.Row="5" Grid.Column="0"/>
+            <TextBox Grid.Row="0" Grid.Column="1" Margin="5"/>
+            <ComboBox Grid.Row="1" Grid.Column="1" Margin="5" ItemsSource="{Binding ClassList}" SelectedItem="{Binding EditedWorkPlanElement.Class}" DisplayMemberPath="Name"/>
+            <ComboBox Grid.Row="2" Grid.Column="1" Margin="5" ItemsSource="{Binding RoomList}" SelectedItem="{Binding EditedWorkPlanElement.Room}" DisplayMemberPath="Name"/>
+            <ComboBox Grid.Row="3" Grid.Column="1" Margin="5" ItemsSource="{Binding Days}" SelectedItem="{Binding EditedWorkPlanElement.DayOfWeek}"/>
+            <ComboBox Grid.Row="4" Grid.Column="1" Margin="5" ItemsSource="{Binding TimeList}" SelectedItem="{Binding EditedWorkPlanElement.StartTime}"/>
+            <ComboBox Grid.Row="5" Grid.Column="1" Margin="5" ItemsSource="{Binding TimeList}" SelectedItem="{Binding EditedWorkPlanElement.EndTime}"/>
+            <Button Grid.Row="6" Grid.Column="0" Content="Cancel" Command="{Binding CancelCommand}"/>
+            <Button Grid.Row="6" Grid.Column="1" Content="Save" Command="{Binding SaveCommand}"/>
+        </Grid>
+    </Grid>
+</UserControl>

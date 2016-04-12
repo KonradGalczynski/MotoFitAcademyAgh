@@ -1,0 +1,48 @@
+﻿<UserControl x:Class="OpenDayApplication.View.RoomsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewmodel="clr-namespace:OpenDayApplication.Viewmodel"
+             xmlns:converters="clr-namespace:OpenDayApplication.Converters"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="600">
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <viewmodel:RoomsViewModel/>
+    </UserControl.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="2">
+            <Button Content="Add room" Command="{Binding AddRoomCommand}"/>
+            <Button Content="Edit room" Command="{Binding EditRoomCommand}"/>
+        </StackPanel>
+        <Grid Grid.Row="1" Grid.Column="1" Margin="7,5,0,5" Visibility="{Binding IsRoomEditVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Name"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Capacity"/>
+            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding EditedRoom.Name}"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding EditedRoom.Capacity}"/>
+            <Button Grid.Row="3" Grid.Column="0" Content="Cancel" Command="{Binding CancelCommand}"/>
+            <Button Grid.Row="3" Grid.Column="1" Content="Save" Command="{Binding SaveCommand}"/>
+        </Grid>
+    </Grid>
+</UserControl>
