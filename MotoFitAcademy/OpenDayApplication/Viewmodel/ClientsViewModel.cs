@@ -2,6 +2,7 @@
 using OpenDayApplication.Model.Managers;
 using System.Collections.Generic;
 using System.Windows.Input;
+using System.Windows;
 
 namespace OpenDayApplication.Viewmodel
 {
@@ -47,12 +48,14 @@ namespace OpenDayApplication.Viewmodel
 
     public ClientsViewModel()
     {
-      _clientsManager = GetClientsManager();
-      AddClientCommand = new BaseCommand(AddClient);
-      DeleteClientCommand = new BaseCommand(DeleteClient);
-      SaveCommand = new BaseCommand(SaveChanges);
-      CancelCommand = new BaseCommand(Cancel);
-      RefreshClients();
+        
+            _clientsManager = GetClientsManager();
+            AddClientCommand = new BaseCommand(AddClient);
+            DeleteClientCommand = new BaseCommand(DeleteClient);
+            SaveCommand = new BaseCommand(SaveChanges);
+            CancelCommand = new BaseCommand(Cancel);
+            RefreshClients();
+       
     }
 
     public void AddClient()
@@ -63,16 +66,26 @@ namespace OpenDayApplication.Viewmodel
 
     public void DeleteClient()
     {
-      IsClientEditVisible = false;
-      if (EditedClient != null && EditedClient.ID != 0)
-      {
-        _clientsManager.DeleteClient(EditedClient);
-        RefreshClients();
-      }
+        try
+        {
+            IsClientEditVisible = false;
+            if (EditedClient != null && EditedClient.ID != 0)
+            {
+                _clientsManager.DeleteClient(EditedClient);
+                RefreshClients();
+            }
+        }
+        catch
+        {
+            MessageBox.Show("Błąd przy usuwaniu klienta!!!");
+        }
+
     }
 
     public void SaveChanges()
+
     {
+        
       _clientsManager.AddClient(EditedClient);
       IsClientEditVisible = false;
       RefreshClients();
@@ -85,7 +98,14 @@ namespace OpenDayApplication.Viewmodel
 
     private void RefreshClients()
     {
-      Clients = new List<Client>(_clientsManager.GetClients());
+        try
+        {
+            Clients = new List<Client>(_clientsManager.GetClients());
+        }
+        catch
+        {
+            MessageBox.Show("Błąd przy wyświetlaniu listy klientów!!!");
+        }
     }
   }
 }
