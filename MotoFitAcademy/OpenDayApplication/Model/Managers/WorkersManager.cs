@@ -34,6 +34,7 @@ namespace OpenDayApplication.Model.Managers
         if (worker.Salary <= 0)
         {
             MessageBox.Show("Pensja musi być większa od 0");
+       
             return;
         }
 
@@ -57,18 +58,28 @@ namespace OpenDayApplication.Model.Managers
     }
     public void DeleteWorker(Worker worker)
     {
-        try
-        {
-            using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
+            MessageBoxResult result = MessageBox.Show("Czy na pewno chcesz usunąć pracownika?", "Potwierdzenie", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
             {
-                dataContext.Workers.Attach(worker);
-                dataContext.Workers.DeleteOnSubmit(worker);
-                dataContext.SubmitChanges();
-            }
-        } catch (System.Data.SqlClient.SqlException)
-        {
-            System.Windows.MessageBox.Show("Nie udało się usunąć pracownika.", "Błąd połączenia z bazą danych");
+            try
+            {
+                using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
+                {
+                    dataContext.Workers.Attach(worker);
+                    dataContext.Workers.DeleteOnSubmit(worker);
+                    dataContext.SubmitChanges();
+                }
+                }
+                catch (System.Data.SqlClient.SqlException)
+            {
+                System.Windows.MessageBox.Show("Nie udało się usunąć pracownika. Błąd połączenia z bazą danych lub pracownik jest przypisany do zajęć");
+                }
         }
+            else
+            {
+                Application.Current.Shutdown();
+            }
+            
     }
     public void EditWorker(Worker worker)
     {
