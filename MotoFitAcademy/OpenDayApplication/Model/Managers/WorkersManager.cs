@@ -39,23 +39,39 @@ namespace OpenDayApplication.Model.Managers
         }
 
             try
-            { 
+            {
                 using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
                 {
-                string pattern = @"^[0-9]{11}$";
-                if (Regex.IsMatch(worker.Pesel, pattern) == false)
-                {
-                    MessageBox.Show("Niepoprawny pesel");
-                    return;
-                }
+
+                    string pattern = @"^[0-9]{11}$";
+
+                    if (Regex.IsMatch(worker.Pesel, pattern) == false)
+                    {
+                        MessageBox.Show("Niepoprawny pesel");
+                        return;
+                    }
+
+                    var workers = GetWorkers();
+
+                    foreach (var w in workers)
+                    {
+                        if (worker.Pesel == w.Pesel)
+                        {
+                            MessageBox.Show("Kolizja peseli");
+                            return;
+                        }
+
+                    }
+
                     dataContext.Workers.InsertOnSubmit(worker);
                     dataContext.SubmitChanges();
                 }
-            } catch (System.Data.SqlClient.SqlException)
+            }
+            catch (System.Data.SqlClient.SqlException)
             {
                 System.Windows.MessageBox.Show("Nie udało się dodać pracownika.", "Błąd połączenia z bazą danych");
             }
-    }
+        }
     public void DeleteWorker(Worker worker)
     {
             MessageBoxResult result = MessageBox.Show("Czy na pewno chcesz usunąć pracownika?", "Potwierdzenie", MessageBoxButton.YesNo, MessageBoxImage.Question);
