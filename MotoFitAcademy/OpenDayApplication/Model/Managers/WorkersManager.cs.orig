@@ -31,15 +31,20 @@ namespace OpenDayApplication.Model.Managers
     }
     public void AddWorker(Worker worker)
     {
-        if (worker.Salary <= 0)
+            try
+            {
+      /*  if (string.IsNullOrWhiteSpace(worker.Name) == true)
         {
-            MessageBox.Show("Pensja musi być większa od 0");
-       
+            MessageBox.Show("Pole imię nie może być puste.");
             return;
         }
 
-            try
-            { 
+        if (string.IsNullOrWhiteSpace(worker.Surname) == true)
+        {
+            MessageBox.Show("Pole nazwisko nie może być puste.");
+            return;
+        } */
+
                 using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
                 {
                 string pattern = @"^[0-9]{11}$";
@@ -58,28 +63,18 @@ namespace OpenDayApplication.Model.Managers
     }
     public void DeleteWorker(Worker worker)
     {
-            MessageBoxResult result = MessageBox.Show("Czy na pewno chcesz usunąć pracownika?", "Potwierdzenie", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (result == MessageBoxResult.Yes)
+        try
+        {
+            using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
             {
-            try
-            {
-                using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
-                {
-                    dataContext.Workers.Attach(worker);
-                    dataContext.Workers.DeleteOnSubmit(worker);
-                    dataContext.SubmitChanges();
-                }
-                }
-                catch (System.Data.SqlClient.SqlException)
-            {
-                System.Windows.MessageBox.Show("Nie udało się usunąć pracownika. Błąd połączenia z bazą danych.");
-                }
-        }
-            else
-            {
-                Application.Current.Shutdown();
+                dataContext.Workers.Attach(worker);
+                dataContext.Workers.DeleteOnSubmit(worker);
+                dataContext.SubmitChanges();
             }
-            
+        } catch (System.Data.SqlClient.SqlException)
+        {
+            System.Windows.MessageBox.Show("Nie udało się usunąć pracownika.", "Błąd połączenia z bazą danych");
+        }
     }
     public void EditWorker(Worker worker)
     {

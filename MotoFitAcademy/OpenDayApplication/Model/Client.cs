@@ -20,6 +20,6 @@ namespace OpenDayApplication.Model
     [Column]
     public string Address { get; set; }
     [Column]
-    public bool VIP {get; set;}
+    public bool VIP { get; set; }
   }
 }

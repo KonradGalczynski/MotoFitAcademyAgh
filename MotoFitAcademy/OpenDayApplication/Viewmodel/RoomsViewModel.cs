@@ -4,6 +4,7 @@ using System.Windows.Input;
 using System.Collections.Generic;
 using System.Windows.Input;
 using OpenDayApplication.Viewmodel.Validators;
+using System.Windows;
 
 namespace OpenDayApplication.Viewmodel
 {
@@ -91,14 +92,27 @@ namespace OpenDayApplication.Viewmodel
     }
     public void SaveChanges()
     {
+      if (EditedRoom.Capacity<=0) 
+          {
+                  MessageBox.Show("Wrong class !", "Class Error!", MessageBoxButton.OK, MessageBoxImage.Warning);
+           }
+              else
+              {
+                 _roomsManager.AddRoom(EditedRoom);
+                  
+                   IsRoomEditVisible = false;
+                  RefreshRooms();
+              } 
       switch (_selectedOperation)
       {
         case CrudOperation.Create:
-          _roomsManager.AddRoom(EditedRoom);
+          
           break;
         case CrudOperation.Edit:
           _roomsManager.EditRoom(EditedRoom);
           break;
+       
+           
       }
       IsRoomEditVisible = false;
             RefreshRooms();
