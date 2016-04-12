@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows;
+using System.Text;
+using System.IO;
+using System;
 
 namespace OpenDayApplication.Viewmodel
 {
@@ -17,6 +20,7 @@ namespace OpenDayApplication.Viewmodel
         public ICommand AddClientCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand DeleteClientCommand { get; set; }
+        public ICommand SaveToFileCommand { get; set; }
         public ICommand CancelCommand { get; set; }
 
 
@@ -54,6 +58,7 @@ namespace OpenDayApplication.Viewmodel
             _clientsManager = GetClientsManager();
             AddClientCommand = new BaseCommand(AddClient);
             DeleteClientCommand = new BaseCommand(DeleteClient);
+            SaveToFileCommand = new BaseCommand(SaveToFile);
             SaveCommand = new BaseCommand(SaveChanges);
             CancelCommand = new BaseCommand(Cancel);
             RefreshClients();
@@ -82,12 +87,24 @@ namespace OpenDayApplication.Viewmodel
             }
         }
         }
+            
         catch
         {
             MessageBox.Show("Błąd przy usuwaniu klienta!!!");
         }
 
     }
+        public void SaveToFile()
+        {
+            var fileOutput = new StringBuilder();
+            foreach (var client in Clients)
+            {
+                fileOutput.Append(client.ID).Append(" ").Append(client.Name).Append(" ").Append(client.Surname).Append(" ").Append(client.Address).Append("\n");
+            }
+            var file = File.CreateText(@"C:\\Users\\Magda\\Desktop" + "\\" + DateTime.Now);
+            file.Write(fileOutput.ToString());
+            file.Close();
+        }
 
         public void SaveChanges()
 

@@ -26,6 +26,7 @@
         <StackPanel Grid.Row="0" Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="2">
             <Button Content="Add client" Command="{Binding AddClientCommand}"/>
             <Button Content="Delete client" Command="{Binding DeleteClientCommand}"/>
+            <Button Content="Save to file" Command="{Binding SaveToFileCommand}"/>
         </StackPanel>
         <DataGrid Grid.Row="1" ItemsSource="{Binding Clients}" Grid.Column="0" Grid.RowSpan="2"
                   SelectedItem="{Binding EditedClient}">
