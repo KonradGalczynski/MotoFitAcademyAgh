@@ -7,6 +7,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenDayApplication.Model.Database;
+using System.Text.RegularExpressions;
+using System.Windows;
 
 namespace OpenDayApplication.Model.Managers
 {
@@ -25,8 +27,14 @@ namespace OpenDayApplication.Model.Managers
     {
       using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
       {
-        dataContext.Workers.InsertOnSubmit(worker);
-        dataContext.SubmitChanges();
+                string pattern = @"^[0-9]{11}$";
+                if (Regex.IsMatch(worker.Pesel, pattern) == false)
+                {
+                    MessageBox.Show("Niepoprawny pesel");
+                    return;
+                }
+                dataContext.Workers.InsertOnSubmit(worker);
+                dataContext.SubmitChanges();
       }
     }
     public void DeleteWorker(Worker worker)
