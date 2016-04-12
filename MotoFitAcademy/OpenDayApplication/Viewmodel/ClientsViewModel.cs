@@ -1,6 +1,7 @@
 ﻿using OpenDayApplication.Model;
 using OpenDayApplication.Model.Managers;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Input;
 
 namespace OpenDayApplication.Viewmodel
@@ -16,6 +17,7 @@ namespace OpenDayApplication.Viewmodel
     public ICommand SaveCommand { get; set; }
     public ICommand DeleteClientCommand { get; set; }
     public ICommand CancelCommand { get; set; }
+
 
     public Client EditedClient
     {
@@ -73,9 +75,17 @@ namespace OpenDayApplication.Viewmodel
 
     public void SaveChanges()
     {
-      _clientsManager.AddClient(EditedClient);
-      IsClientEditVisible = false;
-      RefreshClients();
+        Viewmodel.Validators.AddressValidator validator = new Validators.AddressValidator();
+        if (!validator.IsValidEmail(EditedClient.Address))
+        {
+            MessageBox.Show("Wrong email !", "Email Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+        else
+        {
+            _clientsManager.AddClient(EditedClient);
+            IsClientEditVisible = false;
+            RefreshClients();
+        } 
     }
 
     public void Cancel()
