@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows;
 
 namespace OpenDayApplication.Viewmodel
 {
@@ -195,17 +196,24 @@ namespace OpenDayApplication.Viewmodel
     {
       //if (IsClientValid())
       //{
-      switch (_selectedOperation)
-      {
-        case CrudOperation.Create:
-          _workPlanManager.AddWorkPlanElement(EditedWorkPlanElement);
-          break;
-        case CrudOperation.Edit:
-          _workPlanManager.EditWorkPlanElement(EditedWorkPlanElement);
-          break;
-      }
-      RefreshWorkPlanElements();
-      IsWorkPlanElementEditVisible = false;
+        try
+        {
+            switch (_selectedOperation)
+            {
+                case CrudOperation.Create:
+                    _workPlanManager.AddWorkPlanElement(EditedWorkPlanElement);
+                    break;
+                case CrudOperation.Edit:
+                    _workPlanManager.EditWorkPlanElement(EditedWorkPlanElement);
+                    break;
+            }
+            RefreshWorkPlanElements();
+            IsWorkPlanElementEditVisible = false;
+        }
+        catch
+        {
+            MessageBox.Show("Cos poszlo nie tak .", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
       //}
       //else
       //  MessageBox.Show("Yoe have entered incorrect data!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);

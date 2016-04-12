@@ -33,7 +33,7 @@
                 <DataGridTextColumn Header="NAME" Binding="{Binding Name}" Width="145"/>
                 <DataGridTextColumn Header="SURNAME" Binding="{Binding Surname}" Width="145"/>
                 <DataGridTextColumn Header="ADDRESS" Binding="{Binding Address}" Width="150"/>
-                <DataGridTextColumn Header="VIP" Binding="{Binding VIP}" Width="145"/>
+                <DataGridTextColumn Header="DEBT" Binding="{Binding Debt}" Width="145"/>
             </DataGrid.Columns>
         </DataGrid>
         <Grid Grid.Row="1" Grid.Column="1" Margin="7,5,0,5" Visibility="{Binding IsClientEditVisible, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -51,12 +51,12 @@
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Name"/>
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Surname"/>
             <TextBlock Grid.Row="2" Grid.Column="0" Text="Address"/>
-            <TextBlock Grid.Row="3" Grid.Column="0" Text="VIP"/>
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Debt"/>
             
             <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding EditedClient.Name}"/>
             <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding EditedClient.Surname}"/>
             <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding EditedClient.Address}"/>
-            <CheckBox Grid.Row="3" Grid.Column="1" IsChecked="{Binding EditedClient.VIP}" />
+            <CheckBox Grid.Row="3" Grid.Column="1" IsChecked="{Binding EditedClient.Debt}" />
                 
 
                 <Button Grid.Row="4" Grid.Column="0" Content="Cancel" Command="{Binding CancelCommand}"/>

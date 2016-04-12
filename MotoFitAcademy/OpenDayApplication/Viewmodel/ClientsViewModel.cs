@@ -92,6 +92,7 @@ namespace OpenDayApplication.Viewmodel
         public void SaveChanges()
     
         {
+            try { 
         Viewmodel.Validators.AddressValidator validator = new Validators.AddressValidator();
         if (!validator.IsValidEmail(EditedClient.Address))
         {
@@ -102,7 +103,12 @@ namespace OpenDayApplication.Viewmodel
             _clientsManager.AddClient(EditedClient);
             IsClientEditVisible = false;
             RefreshClients();
-        } 
+        }
+            }
+            catch
+            {
+                MessageBox.Show("Cos poszlo nie tak", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public void Cancel()
