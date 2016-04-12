@@ -68,7 +68,7 @@ namespace OpenDayApplication.Viewmodel
             DeleteWorkerCommand = new BaseCommand(DeleteWorker);
             SaveCommand = new BaseCommand(SaveChanges);
             CancelCommand = new BaseCommand(Cancel);
-            
+            RefreshWorkers();
         }
 
         public void AddWorker()
