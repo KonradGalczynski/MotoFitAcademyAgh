@@ -90,7 +90,7 @@ namespace OpenDayApplication.Viewmodel
     }
 
         public void SaveChanges()
-
+    
         {
         Viewmodel.Validators.AddressValidator validator = new Validators.AddressValidator();
         if (!validator.IsValidEmail(EditedClient.Address))

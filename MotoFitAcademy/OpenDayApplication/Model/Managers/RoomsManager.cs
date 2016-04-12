@@ -12,75 +12,86 @@ using System.Windows;
 
 namespace OpenDayApplication.Model.Managers
 {
-  public class RoomsManager
-  {
-    public List<Room> GetRooms()
+    public class RoomsManager
     {
-      var _rooms = new List<Room>();
-      try
-      {
-        using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
+        public List<Room> GetRooms()
         {
-          _rooms = dataContext.Rooms.ToList();
-        }
-      }
-      catch (Exception e)
-      {
+            var _rooms = new List<Room>();
+            try
+            {
+                using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
+                {
+                    _rooms = dataContext.Rooms.ToList();
+                }
+            }
+            catch (Exception e)
+            {
                 MessageBox.Show("Nie udało się pobrać zawartości bazy danych");
-      }
-            
-      return _rooms;
-      
-      
-    }
-    public void AddRoom(Room room)
-    {
-      if (string.IsNullOrWhiteSpace(room.Name)==true)
-        {MessageBox.Show("Nazwa nie może być pusta.");
-        return;  
+            }
+
+            return _rooms;
+
+
         }
-      try
-            
-            { 
+        public void AddRoom(Room room)
+        {
+            if (string.IsNullOrWhiteSpace(room.Name) == true)
+            {
+                MessageBox.Show("Nazwa nie może być pusta.");
+                return;
+            }
+            try
+            {
                 using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
                 {
                     dataContext.Rooms.InsertOnSubmit(room);
                     dataContext.SubmitChanges();
                 }
-       
+
             }
             catch (Exception e)
             {
                 MessageBox.Show("Operacja Dodaj nie powiodła się");
             }
         }
-    public void EditRoom(Room room)
-    {
-        try
+        public void EditRoom(Room room)
         {
-            using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
+            try
             {
-                var roomToEdit = dataContext.Rooms.FirstOrDefault(r => r.ID == room.ID);
-                roomToEdit.Name = room.Name;
-                roomToEdit.Capacity = room.Capacity;
-                dataContext.SubmitChanges();
+                using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
+                {
+                    var roomToEdit = dataContext.Rooms.FirstOrDefault(r => r.ID == room.ID);
+                    roomToEdit.Name = room.Name;
+                    roomToEdit.Capacity = room.Capacity;
+                    dataContext.SubmitChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Operacja Edytuj nie powiodła się");
             }
         }
-        catch (Exception e)
+
+        internal void DeleteRoom(Room EditedRoom)
         {
-            MessageBox.Show("Operacja Edytuj nie powiodła się");
+            try
+            {
+                var buttons = MessageBoxButton.YesNo;
+                var question = MessageBoxImage.Question;
+                if (MessageBox.Show("Czy na pewno chcesz usunac salę?", "Potwierdzenie usuniecia", buttons, question) == MessageBoxResult.Yes)
+                {
+
+                    using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
+                    {
+                        dataContext.Rooms.Attach(EditedRoom);
+                        dataContext.Rooms.DeleteOnSubmit(EditedRoom);
+                        dataContext.SubmitChanges();
+                    }
+                }
+            }
+            catch
+            {MessageBox.Show("Nie można usunąć sali!","Błąd"); }
+
         }
     }
-
-   internal void DeleteRoom(Room EditedRoom)
-    {
-        using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
-        {
-            dataContext.Rooms.Attach(EditedRoom);
-            dataContext.Rooms.DeleteOnSubmit(EditedRoom);
-            dataContext.SubmitChanges();
-        }
-    } 
-   
-  }
 }
