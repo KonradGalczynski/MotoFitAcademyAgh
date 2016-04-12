@@ -15,8 +15,9 @@ namespace OpenDayApplication.Model.Database
 
     public static string GetSqlConnectionString()
     {
-      return string.Format("Server={0},1433;Database={1};User ID={2};Password={3};Trusted_Connection=False;Encrypt=True;Connection Timeout=30",
-       ServerName, DatabaseName, UserName, Password);
+            return string.Format("Server={0},1433;Database={1};User ID={2};Password={3};Trusted_Connection=False;Encrypt=True;Connection Timeout=30",
+            ServerName, DatabaseName, UserName, Password);
+            
     }
   }
 }
