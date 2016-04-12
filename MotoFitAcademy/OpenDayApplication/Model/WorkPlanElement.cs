@@ -9,7 +9,7 @@ using System.Data.Linq.Mapping;
 
 namespace OpenDayApplication.Model
 {
-  [Table(Name = "WorkPlan")]
+    [Table(Name = "WorkPlan")]
   public class WorkPlanElement
   {
     [Column(Name = "Id", IsPrimaryKey = true, IsDbGenerated = true)]
@@ -27,4 +27,5 @@ namespace OpenDayApplication.Model
     [Column]
     public Class Class { get; set; }
   }
+  
 }
