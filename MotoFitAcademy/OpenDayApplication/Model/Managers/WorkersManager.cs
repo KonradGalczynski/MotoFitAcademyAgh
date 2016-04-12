@@ -34,6 +34,7 @@ namespace OpenDayApplication.Model.Managers
         if (worker.Salary <= 0)
         {
             MessageBox.Show("Pensja musi być większa od 0");
+       
             return;
         }
 

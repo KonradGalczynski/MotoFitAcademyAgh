@@ -107,7 +107,7 @@ namespace OpenDayApplication.Viewmodel
     }
 
         public void SaveChanges()
-
+    
         {
             try { 
         Viewmodel.Validators.AddressValidator validator = new Validators.AddressValidator();
