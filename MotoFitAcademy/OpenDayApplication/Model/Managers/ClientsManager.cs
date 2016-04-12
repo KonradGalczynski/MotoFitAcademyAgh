@@ -39,5 +39,24 @@ namespace OpenDayApplication.Model.Managers
         dataContext.SubmitChanges();
       }
     }
-  }
+    public void EditClient(Client client)
+    {
+        try
+        {
+            using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
+            {
+                var clientToEdit = dataContext.Clients.FirstOrDefault(w => w.ID == client.ID);
+                clientToEdit.Name = client.Name;
+                clientToEdit.Surname = client.Surname;
+                clientToEdit.Address = client.Address;
+                clientToEdit.VIP = client.VIP;
+                dataContext.SubmitChanges();
+            }
+        }
+        catch (System.Data.SqlClient.SqlException)
+        {
+            System.Windows.MessageBox.Show("Nie udało się dokonać edycji klienta.", "Błąd połączenia z bazą danych");
+        }
+    }
+    }
 }
