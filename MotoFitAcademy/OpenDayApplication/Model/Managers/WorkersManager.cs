@@ -72,7 +72,7 @@ namespace OpenDayApplication.Model.Managers
                 }
                 catch (System.Data.SqlClient.SqlException)
             {
-                System.Windows.MessageBox.Show("Nie udało się usunąć pracownika. Błąd połączenia z bazą danych.");
+                System.Windows.MessageBox.Show("Nie udało się usunąć pracownika. Błąd połączenia z bazą danych lub pracownik jest przypisany do zajęć");
                 }
         }
             else
