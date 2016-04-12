@@ -39,10 +39,9 @@ namespace OpenDayApplication.Model.Managers
         {MessageBox.Show("Nazwa nie może być pusta.");
         return;  
         }
-      
-
-          
-
+      try
+            
+            { 
                 using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
                 {
                     dataContext.Rooms.InsertOnSubmit(room);
