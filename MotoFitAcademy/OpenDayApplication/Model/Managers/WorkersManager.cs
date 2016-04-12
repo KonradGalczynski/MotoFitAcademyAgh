@@ -37,43 +37,53 @@ namespace OpenDayApplication.Model.Managers
             return;
         }
 
-
-      using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
-      {
+            try
+            { 
+                using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
+                {
                 string pattern = @"^[0-9]{11}$";
                 if (Regex.IsMatch(worker.Pesel, pattern) == false)
                 {
                     MessageBox.Show("Niepoprawny pesel");
                     return;
                 }
-                dataContext.Workers.InsertOnSubmit(worker);
-                dataContext.SubmitChanges();
-      }
+                    dataContext.Workers.InsertOnSubmit(worker);
+                    dataContext.SubmitChanges();
+                }
+            } catch (System.Data.SqlClient.SqlException)
+            {
+                System.Windows.MessageBox.Show("Nie udało się dodać pracownika.", "Błąd połączenia z bazą danych");
+            }
     }
     public void DeleteWorker(Worker worker)
+    {
+        try
+        {
+            using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
+            {
+                dataContext.Workers.Attach(worker);
+                dataContext.Workers.DeleteOnSubmit(worker);
+                dataContext.SubmitChanges();
+            }
+        } catch (System.Data.SqlClient.SqlException)
+        {
+            System.Windows.MessageBox.Show("Nie udało się usunąć pracownika.", "Błąd połączenia z bazą danych");
+        }
+    }
+    public void EditWorker(Worker worker)
     {
             try
             {
                 using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
                 {
-                    dataContext.Workers.Attach(worker);
-                    dataContext.Workers.DeleteOnSubmit(worker);
+                    var workerToEdit = dataContext.Workers.FirstOrDefault(w => w.ID == worker.ID);
+                    workerToEdit.Name = worker.Name;
+                    workerToEdit.Surname = worker.Surname;
                     dataContext.SubmitChanges();
                 }
-            } catch (System.Data.SqlClient.SqlException)
-            {
-                System.Windows.MessageBox.Show("Nie udało się usunąć pracownika.", "Błąd połączenia z bazą danych");
+            } catch (System.Data.SqlClient.SqlException) {
+                System.Windows.MessageBox.Show("Nie udało się dokonać edycji pracownika.", "Błąd połączenia z bazą danych");
             }
-    }
-    public void EditWorker(Worker worker)
-    {
-      using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
-      {
-        var workerToEdit = dataContext.Workers.FirstOrDefault(w => w.ID == worker.ID);
-        workerToEdit.Name = worker.Name;
-        workerToEdit.Surname = worker.Surname;
-        dataContext.SubmitChanges();
-      }
     }
   }
 }
