@@ -48,7 +48,11 @@
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Name"/>
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Difficulty level"/>
             <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding EditedClass.Name}"/>
-            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding EditedClass.Popularity}"/>
+            <ComboBox Grid.Row="1" Grid.Column="1" Text="{Binding EditedClass.Popularity}">
+                <ComboBoxItem Name="beginner">beginner</ComboBoxItem>
+                <ComboBoxItem Name="intermediate">intermediate</ComboBoxItem>
+                <ComboBoxItem Name="advanced">advanced</ComboBoxItem>
+            </ComboBox>
             <Button Grid.Row="2" Grid.Column="0" Content="Cancel" Command="{Binding CancelCommand}"/>
             <Button Grid.Row="2" Grid.Column="1" Content="Save" Command="{Binding SaveCommand}"/>
         </Grid>
