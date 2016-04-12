@@ -85,13 +85,8 @@ namespace OpenDayApplication.Viewmodel
             IsWorkerEditVisible = false;
             if (EditedWorker != null && EditedWorker.ID != 0)
             {
-                try
-                {
-                    _workersManager.DeleteWorker(EditedWorker);
-                } finally
-                {
-                    RefreshWorkers();
-                }
+                _workersManager.DeleteWorker(EditedWorker);
+                RefreshWorkers();
             }
         }
 
