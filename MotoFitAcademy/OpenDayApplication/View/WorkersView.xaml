@@ -29,15 +29,18 @@
             <Button Content="Edit worker" Command="{Binding EditWorkerCommand}"/>
             <Button Content="Delete worker" Command="{Binding DeleteWorkerCommand}"/>
         </StackPanel>
-        <DataGrid Grid.Row="1" ItemsSource="{Binding Workers}" Grid.Column="0" Grid.RowSpan="2"
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Workers}" Grid.Column="0" Grid.RowSpan="3"
                   SelectedItem="{Binding EditedWorker}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="NAME" Binding="{Binding Name}" Width="145"/>
                 <DataGridTextColumn Header="SURNAME" Binding="{Binding Surname}" Width="145"/>
+                <DataGridTextColumn Header="PESEL" Binding="{Binding Pesel}" Width="145"/>
+                <DataGridTextColumn Header="SALARY" Binding="{Binding Salary}" Width="145"/>
             </DataGrid.Columns>
         </DataGrid>
         <Grid Grid.Row="1" Grid.Column="1" Margin="7,5,0,5" Visibility="{Binding IsWorkerEditVisible, Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -51,6 +54,8 @@
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Name"/>
             <TextBlock Grid.Row="2" Grid.Column="0" Text="Surname"/>
             <TextBox Grid.Row="1" Grid.Column="1">
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="PESEL"/>
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Salary"/>
                 <TextBox.Text>
                     <Binding Path="EditedWorker.Name" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
@@ -60,9 +65,12 @@
                 </TextBox.Text>
             </TextBox>
             <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding EditedWorker.Surname}"/>
-            <Button Grid.Row="3" Grid.Column="0" Content="Cancel" Command="{Binding CancelCommand}"/>
-            <Button Grid.Row="3" Grid.Column="1" Content="Save" Command="{Binding SaveCommand}"/>
+            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding EditedWorker.Pesel}"/>
+            <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding EditedWorker.Salary}"/>
+            <Button Grid.Row="5" Grid.Column="0" Content="Cancel" Command="{Binding CancelCommand}"/>
+            <Button Grid.Row="5" Grid.Column="1" Content="Save" Command="{Binding SaveCommand}"/>
             <Label Grid.Row="0" Grid.Column="1"  Content="{Binding RefreshWorkersCount}" />
+            <Button Grid.Row="4" Grid.Column="1" Content="Save" Command="{Binding SaveCommand}"/>
         </Grid>
     </Grid>
 </UserControl>

@@ -1,12 +1,16 @@
 ﻿using OpenDayApplication.Model;
 using OpenDayApplication.Model.Managers;
 using System.Windows.Input;
+using System.Collections.Generic;
+using System.Windows.Input;
+using OpenDayApplication.Viewmodel.Validators;
 
 namespace OpenDayApplication.Viewmodel
 {
   public class RoomsViewModel : BaseViewModel
   {
     private readonly RoomsManager _roomsManager;
+    private List<Room> _rooms;
     private bool _isRoomEditVisible;
     private Room _editedRoom;
     private CrudOperation _selectedOperation;
@@ -14,6 +18,7 @@ namespace OpenDayApplication.Viewmodel
     public ICommand AddRoomCommand { get; set; }
     public ICommand SaveCommand { get; set; }
     public ICommand EditRoomCommand { get; set; }
+   public ICommand DeleteRoomCommand { get; set; }
     public ICommand CancelCommand { get; set; }
 
     public Room EditedRoom
@@ -25,7 +30,16 @@ namespace OpenDayApplication.Viewmodel
         OnPropertyChanged("EditedRoom");
       }
     }
-    public bool IsRoomEditVisible
+        public List<Room> Rooms
+        {
+            get { return _rooms; }
+            set
+            {
+                _rooms = value;
+                OnPropertyChanged("Rooms");
+            }
+        }
+        public bool IsRoomEditVisible
     {
       get { return _isRoomEditVisible; }
       set
@@ -41,7 +55,9 @@ namespace OpenDayApplication.Viewmodel
       AddRoomCommand = new BaseCommand(AddRoom);
       EditRoomCommand = new BaseCommand(EditRoom);
       SaveCommand = new BaseCommand(SaveChanges);
+      DeleteRoomCommand = new BaseCommand(DeleteRoom);
       CancelCommand = new BaseCommand(Cancel);
+      RefreshRooms();
     }
 
     public void AddRoom()
@@ -62,8 +78,17 @@ namespace OpenDayApplication.Viewmodel
       {
         IsRoomEditVisible = false;
       }
+            RefreshRooms();
     }
-
+    public void DeleteRoom()
+    {
+        IsRoomEditVisible = false;
+        if (EditedRoom != null && EditedRoom.ID != 0)
+        {
+            _roomsManager.DeleteRoom(EditedRoom);
+            RefreshRooms();
+        }
+    }
     public void SaveChanges()
     {
       switch (_selectedOperation)
@@ -76,11 +101,16 @@ namespace OpenDayApplication.Viewmodel
           break;
       }
       IsRoomEditVisible = false;
+            RefreshRooms();
     }
 
     public void Cancel()
     {
       IsRoomEditVisible = false;
     }
-  }
+        private void RefreshRooms()
+        {
+            Rooms = new List<Room>(_roomsManager.GetRooms());
+        }
+    }
 }

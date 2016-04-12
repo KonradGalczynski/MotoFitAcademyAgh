@@ -26,7 +26,15 @@
         <StackPanel Grid.Row="0" Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="2">
             <Button Content="Add room" Command="{Binding AddRoomCommand}"/>
             <Button Content="Edit room" Command="{Binding EditRoomCommand}"/>
+            <Button Content="Delete room" Command="{Binding DeleteRoomCommand}"/>
         </StackPanel>
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Rooms}" Grid.Column="0" Grid.RowSpan="2"
+                  SelectedItem="{Binding EditedRoom}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="NAME" Binding="{Binding Name}" Width="145"/>
+                <DataGridTextColumn Header="CAPACITY" Binding="{Binding Capacity}" Width="145"/>
+            </DataGrid.Columns>
+        </DataGrid>
         <Grid Grid.Row="1" Grid.Column="1" Margin="7,5,0,5" Visibility="{Binding IsRoomEditVisible, Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
