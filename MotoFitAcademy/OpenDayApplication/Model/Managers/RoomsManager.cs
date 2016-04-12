@@ -7,6 +7,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenDayApplication.Model.Database;
+using System.Windows;
 
 namespace OpenDayApplication.Model.Managers
 {
@@ -23,11 +24,20 @@ namespace OpenDayApplication.Model.Managers
     }
     public void AddRoom(Room room)
     {
+      if (string.IsNullOrWhiteSpace(room.Name)==true)
+        {MessageBox.Show("Nazwa nie może być pusta.");
+        return;  
+        }
+      
+
+          
+
       using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
       {
         dataContext.Rooms.InsertOnSubmit(room);
         dataContext.SubmitChanges();
       }
+       
     }
     public void EditRoom(Room room)
     {
