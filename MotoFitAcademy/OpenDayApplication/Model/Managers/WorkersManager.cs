@@ -31,17 +31,12 @@ namespace OpenDayApplication.Model.Managers
     }
     public void AddWorker(Worker worker)
     {
-      /*  if (string.IsNullOrWhiteSpace(worker.Name) == true)
+        if (worker.Salary <= 0)
         {
-            MessageBox.Show("Pole imię nie może być puste.");
+            MessageBox.Show("Pensja musi być większa od 0");
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(worker.Surname) == true)
-        {
-            MessageBox.Show("Pole nazwisko nie może być puste.");
-            return;
-        } */
 
       using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
       {
