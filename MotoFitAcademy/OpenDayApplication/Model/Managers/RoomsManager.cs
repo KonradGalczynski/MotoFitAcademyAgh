@@ -7,6 +7,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenDayApplication.Model.Database;
+using System;
+using System.Windows;
 
 namespace OpenDayApplication.Model.Managers
 {
@@ -15,29 +17,53 @@ namespace OpenDayApplication.Model.Managers
     public List<Room> GetRooms()
     {
       var _rooms = new List<Room>();
-      using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
+      try
       {
-        _rooms = dataContext.Rooms.ToList();
+        using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
+        {
+          _rooms = dataContext.Rooms.ToList();
+        }
       }
+      catch (Exception e)
+      {
+                MessageBox.Show("Nie udało się pobrać zawartości bazy danych");
+      }
+            
       return _rooms;
+      
+      
     }
     public void AddRoom(Room room)
     {
-      using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
-      {
-        dataContext.Rooms.InsertOnSubmit(room);
-        dataContext.SubmitChanges();
-      }
-    }
+            try
+            {
+                using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
+                {
+                    dataContext.Rooms.InsertOnSubmit(room);
+                    dataContext.SubmitChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Operacja Dodaj nie powiodła się");
+            }
+        }
     public void EditRoom(Room room)
     {
-      using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
+      try
       {
-        var roomToEdit = dataContext.Rooms.FirstOrDefault(r => r.ID == room.ID);
-        roomToEdit.Name = room.Name;
-        roomToEdit.Capacity = room.Capacity;
-        dataContext.SubmitChanges();
+        using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
+        {
+            var roomToEdit = dataContext.Rooms.FirstOrDefault(r => r.ID == room.ID);
+            roomToEdit.Name = room.Name;
+            roomToEdit.Capacity = room.Capacity;
+            dataContext.SubmitChanges();
+        }
       }
-    }
+      catch (Exception e)
+      {
+        MessageBox.Show("Operacja Edytuj nie powiodła się");
+      }
+}
   }
 }
