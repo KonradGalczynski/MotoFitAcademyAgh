@@ -18,6 +18,7 @@ namespace OpenDayApplication.Viewmodel
         public ICommand DeleteClientCommand { get; set; }
         public ICommand CancelCommand { get; set; }
 
+
         public Client EditedClient
         {
             get { return _editedClient; }
@@ -79,9 +80,17 @@ namespace OpenDayApplication.Viewmodel
 
         public void SaveChanges()
         {
+        Viewmodel.Validators.AddressValidator validator = new Validators.AddressValidator();
+        if (!validator.IsValidEmail(EditedClient.Address))
+        {
+            MessageBox.Show("Wrong email !", "Email Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+        else
+        {
             _clientsManager.AddClient(EditedClient);
             IsClientEditVisible = false;
             RefreshClients();
+        } 
         }
 
         public void Cancel()

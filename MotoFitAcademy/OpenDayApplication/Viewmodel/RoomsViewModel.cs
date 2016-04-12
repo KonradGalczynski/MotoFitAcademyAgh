@@ -1,12 +1,16 @@
 ﻿using OpenDayApplication.Model;
 using OpenDayApplication.Model.Managers;
 using System.Windows.Input;
+using System.Collections.Generic;
+using System.Windows.Input;
+using OpenDayApplication.Viewmodel.Validators;
 
 namespace OpenDayApplication.Viewmodel
 {
   public class RoomsViewModel : BaseViewModel
   {
     private readonly RoomsManager _roomsManager;
+    private List<Room> _rooms;
     private bool _isRoomEditVisible;
     private Room _editedRoom;
     private CrudOperation _selectedOperation;
@@ -25,7 +29,16 @@ namespace OpenDayApplication.Viewmodel
         OnPropertyChanged("EditedRoom");
       }
     }
-    public bool IsRoomEditVisible
+        public List<Room> Rooms
+        {
+            get { return _rooms; }
+            set
+            {
+                _rooms = value;
+                OnPropertyChanged("Rooms");
+            }
+        }
+        public bool IsRoomEditVisible
     {
       get { return _isRoomEditVisible; }
       set
@@ -42,6 +55,7 @@ namespace OpenDayApplication.Viewmodel
       EditRoomCommand = new BaseCommand(EditRoom);
       SaveCommand = new BaseCommand(SaveChanges);
       CancelCommand = new BaseCommand(Cancel);
+      RefreshRooms();
     }
 
     public void AddRoom()
@@ -62,6 +76,7 @@ namespace OpenDayApplication.Viewmodel
       {
         IsRoomEditVisible = false;
       }
+            RefreshRooms();
     }
 
     public void SaveChanges()
@@ -76,11 +91,16 @@ namespace OpenDayApplication.Viewmodel
           break;
       }
       IsRoomEditVisible = false;
+            RefreshRooms();
     }
 
     public void Cancel()
     {
       IsRoomEditVisible = false;
     }
-  }
+        private void RefreshRooms()
+        {
+            Rooms = new List<Room>(_roomsManager.GetRooms());
+        }
+    }
 }
