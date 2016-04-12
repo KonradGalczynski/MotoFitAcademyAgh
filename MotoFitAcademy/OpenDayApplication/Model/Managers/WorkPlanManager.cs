@@ -17,56 +17,65 @@ namespace OpenDayApplication.Model.Managers
     private static List<WorkPlanElement> _workPlanElements;
     public List<WorkPlanElement> GetWorkPlanElements()
     {
-      _workPlanElements = new List<WorkPlanElement>();
-      using (var sqlConn = new SqlConnection(Confiuration.GetSqlConnectionString()))
-      {
-        var cmd = new SqlCommand(@"SELECT WorkPlan.Id AS WorkPlanId, DayIndex, StartTime, EndTime, Employees.Id AS EmployeeId, Employees.Name AS EmployeeName, Salary,
+            try
+            {
+                _workPlanElements = new List<WorkPlanElement>();
+                using (var sqlConn = new SqlConnection(Confiuration.GetSqlConnectionString()))
+                {
+                    var cmd = new SqlCommand(@"SELECT WorkPlan.Id AS WorkPlanId, DayIndex, StartTime, EndTime, Employees.Id AS EmployeeId, Employees.Name AS EmployeeName, Salary,
                                    Rooms.Id AS RoomId, Rooms.Name AS RoomName, Capacity, Classes.Id AS ClassId, Classes.Name AS ClassName, AddInfo FROM WorkPlan 
                                    LEFT JOIN Employees ON WorkPlan.WorkerId=Employees.Id
                                    LEFT JOIN Rooms ON Rooms.Id=WorkPlan.RoomId
                                    LEFT JOIN Classes ON Classes.Id=WorkPlan.ClassId")
-        {
-          CommandType = CommandType.Text,
-          Connection = sqlConn
-        };
-        sqlConn.Open();
-        using (var reader = cmd.ExecuteReader())
-        {
-          if (reader.HasRows)
-          {
-            while (reader.Read())
-            {
-              var workPlanElement = new WorkPlanElement();
-              var worker = new Worker();
-              var _class = new Class();
-              var room = new Room();
+                    {
+                        CommandType = CommandType.Text,
+                        Connection = sqlConn
+                    };
+                    sqlConn.Open();
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                var workPlanElement = new WorkPlanElement();
+                                var worker = new Worker();
+                                var _class = new Class();
+                                var room = new Room();
 
-              worker.ID = reader.GetInt32(reader.GetOrdinal("EmployeeId"));
-              worker.Name = reader.GetString(reader.GetOrdinal("EmployeeName"));
-              workPlanElement.Worker = worker;
+                                worker.ID = reader.GetInt32(reader.GetOrdinal("EmployeeId"));
+                                worker.Name = reader.GetString(reader.GetOrdinal("EmployeeName"));
+                                workPlanElement.Worker = worker;
 
-              room.ID = reader.GetInt32(reader.GetOrdinal("RoomId"));
-              room.Name = reader.GetString(reader.GetOrdinal("RoomName"));
-              room.Capacity = reader.GetInt32(reader.GetOrdinal("Capacity"));
-              workPlanElement.Room = room;
+                                room.ID = reader.GetInt32(reader.GetOrdinal("RoomId"));
+                                room.Name = reader.GetString(reader.GetOrdinal("RoomName"));
+                                room.Capacity = reader.GetInt32(reader.GetOrdinal("Capacity"));
+                                workPlanElement.Room = room;
 
-              workPlanElement.Worker = worker;
+                                workPlanElement.Worker = worker;
 
-              _class.ID = reader.GetInt32(reader.GetOrdinal("ClassId"));
-              _class.Name = reader.GetString(reader.GetOrdinal("ClassName"));
-              _class.Popularity = reader.GetString(reader.GetOrdinal("AddInfo"));
-              workPlanElement.Class = _class;
+                                _class.ID = reader.GetInt32(reader.GetOrdinal("ClassId"));
+                                _class.Name = reader.GetString(reader.GetOrdinal("ClassName"));
+                                _class.Popularity = reader.GetString(reader.GetOrdinal("AddInfo"));
+                                workPlanElement.Class = _class;
 
-              workPlanElement.ID = reader.GetInt32(reader.GetOrdinal("WorkPlanId"));
-              workPlanElement.DayOfWeek = (DayOfWeek)reader.GetInt32(reader.GetOrdinal("DayIndex"));
-              workPlanElement.StartTime = reader.GetTimeSpan(reader.GetOrdinal("StartTime"));
-              workPlanElement.EndTime = reader.GetTimeSpan(reader.GetOrdinal("EndTime"));
-              _workPlanElements.Add(workPlanElement);
+                                workPlanElement.ID = reader.GetInt32(reader.GetOrdinal("WorkPlanId"));
+                                workPlanElement.DayOfWeek = (DayOfWeek)reader.GetInt32(reader.GetOrdinal("DayIndex"));
+                                workPlanElement.StartTime = reader.GetTimeSpan(reader.GetOrdinal("StartTime"));
+                                workPlanElement.EndTime = reader.GetTimeSpan(reader.GetOrdinal("EndTime"));
+                                _workPlanElements.Add(workPlanElement);
+                            }
+                        }
+                    }
+                }
+
             }
-          }
-        }
-      }
-      return _workPlanElements;
+            catch
+            {
+                System.Windows.MessageBox.Show("Brak połączenia z bazą danych!");
+            }
+            return _workPlanElements;
+            
     }
     public void AddWorkPlanElement(WorkPlanElement workPlanElement)
     {
@@ -89,13 +98,21 @@ namespace OpenDayApplication.Model.Managers
     }
     public void DeleteWorkPlanElement(WorkPlanElement workPlanElement)
     {
-      using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
-      {
-        dataContext.WorkPlanElements.Attach(workPlanElement);
-        dataContext.WorkPlanElements.DeleteOnSubmit(workPlanElement);
-        dataContext.SubmitChanges();
-      }
-    }
+            try
+            {
+                using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
+                {
+                    dataContext.WorkPlanElements.Attach(workPlanElement);
+                    dataContext.WorkPlanElements.DeleteOnSubmit(workPlanElement);
+                    dataContext.SubmitChanges();
+                }
+
+            }
+            catch
+            {
+                System.Windows.MessageBox.Show("Brak połączenia z bazą danych!");
+            }
+        }
     public void EditWorkPlanElement(WorkPlanElement workPlanElement)
     {
       using (var sqlConn = new SqlConnection(Confiuration.GetSqlConnectionString()))
