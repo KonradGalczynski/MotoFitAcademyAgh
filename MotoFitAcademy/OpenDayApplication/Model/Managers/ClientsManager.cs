@@ -49,7 +49,7 @@ namespace OpenDayApplication.Model.Managers
                 clientToEdit.Name = client.Name;
                 clientToEdit.Surname = client.Surname;
                 clientToEdit.Address = client.Address;
-                clientToEdit.VIP = client.VIP;
+                clientToEdit.Debt = client.Debt;
                 dataContext.SubmitChanges();
             }
         }
