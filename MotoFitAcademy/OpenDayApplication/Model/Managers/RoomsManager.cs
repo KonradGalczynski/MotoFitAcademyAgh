@@ -35,13 +35,20 @@ namespace OpenDayApplication.Model.Managers
     }
     public void AddRoom(Room room)
     {
-            try
-            {
+      if (string.IsNullOrWhiteSpace(room.Name)==true)
+        {MessageBox.Show("Nazwa nie może być pusta.");
+        return;  
+        }
+      
+
+          
+
                 using (var dataContext = new MotoFitAcademyDataContext(Confiuration.GetSqlConnectionString()))
                 {
                     dataContext.Rooms.InsertOnSubmit(room);
                     dataContext.SubmitChanges();
                 }
+       
             }
             catch (Exception e)
             {
