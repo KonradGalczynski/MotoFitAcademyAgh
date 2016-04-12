@@ -32,7 +32,7 @@
                   SelectedItem="{Binding EditedClass}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="NAME" Binding="{Binding Name}" Width="280"/>
-                <DataGridTextColumn Header="POPULARITY" Binding="{Binding Popularity}" Width="160"/>
+                <DataGridTextColumn Header="DIFFICULTY LEVEL" Binding="{Binding Popularity}" Width="160"/>
             </DataGrid.Columns>
         </DataGrid>
         <Grid Grid.Row="1" Grid.Column="1" Margin="7,5,0,5" Visibility="{Binding IsClassEditVisible, Converter={StaticResource BoolToVisibilityConverter}}">

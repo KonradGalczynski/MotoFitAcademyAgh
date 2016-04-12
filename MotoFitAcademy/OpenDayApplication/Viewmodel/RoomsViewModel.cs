@@ -19,6 +19,7 @@ namespace OpenDayApplication.Viewmodel
     public ICommand AddRoomCommand { get; set; }
     public ICommand SaveCommand { get; set; }
     public ICommand EditRoomCommand { get; set; }
+   public ICommand DeleteRoomCommand { get; set; }
     public ICommand CancelCommand { get; set; }
 
     public Room EditedRoom
@@ -55,6 +56,7 @@ namespace OpenDayApplication.Viewmodel
       AddRoomCommand = new BaseCommand(AddRoom);
       EditRoomCommand = new BaseCommand(EditRoom);
       SaveCommand = new BaseCommand(SaveChanges);
+      DeleteRoomCommand = new BaseCommand(DeleteRoom);
       CancelCommand = new BaseCommand(Cancel);
       RefreshRooms();
     }
@@ -79,7 +81,15 @@ namespace OpenDayApplication.Viewmodel
       }
             RefreshRooms();
     }
-
+    public void DeleteRoom()
+    {
+        IsRoomEditVisible = false;
+        if (EditedRoom != null && EditedRoom.ID != 0)
+        {
+            _roomsManager.DeleteRoom(EditedRoom);
+            RefreshRooms();
+        }
+    }
     public void SaveChanges()
     {
       if (EditedRoom.Capacity<=0) 

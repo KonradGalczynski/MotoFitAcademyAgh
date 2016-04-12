@@ -26,6 +26,7 @@
         <StackPanel Grid.Row="0" Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="2">
             <Button Content="Add room" Command="{Binding AddRoomCommand}"/>
             <Button Content="Edit room" Command="{Binding EditRoomCommand}"/>
+            <Button Content="Delete room" Command="{Binding DeleteRoomCommand}"/>
         </StackPanel>
         <DataGrid Grid.Row="1" ItemsSource="{Binding Rooms}" Grid.Column="0" Grid.RowSpan="2"
                   SelectedItem="{Binding EditedRoom}">
