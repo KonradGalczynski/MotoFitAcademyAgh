@@ -10,6 +10,8 @@ using System;
 
 namespace OpenDayApplication.Viewmodel
 {
+     
+
     public class ClientsViewModel : BaseViewModel
     {
         private readonly ClientsManager _clientsManager;
@@ -123,6 +125,21 @@ namespace OpenDayApplication.Viewmodel
             file.Close();
         }
 
+        public bool IsMailUniq()
+        {
+               foreach ( var el  in _clients )
+               {
+                   if (el.Address == EditedClient.Address)    
+                        {
+                            return false;
+                          
+                        }
+
+               }
+               return true;
+        }
+
+        
         public void SaveChanges()
     
         {
@@ -134,7 +151,14 @@ namespace OpenDayApplication.Viewmodel
         }
         else
         {
-            switch (_selectedOperation)
+
+            if (!IsMailUniq())
+            {
+                MessageBox.Show(" email repeated!", "Email repeated", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                switch (_selectedOperation)
             {
                 case CrudOperation.Create:
                     _clientsManager.AddClient(EditedClient);
@@ -143,8 +167,9 @@ namespace OpenDayApplication.Viewmodel
                 _clientsManager.EditClient(EditedClient);
                 break;
             }
-            IsClientEditVisible = false;
-            RefreshClients();
+                IsClientEditVisible = false;
+                RefreshClients();
+            }
         }
             }
             catch
