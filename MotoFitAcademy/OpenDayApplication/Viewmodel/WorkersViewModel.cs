@@ -14,13 +14,16 @@ namespace OpenDayApplication.Viewmodel
         private bool _isWorkerEditVisible;
         private Worker _editedWorker;
         private CrudOperation _selectedOperation;
+        private int _workerCount;
 
         public ICommand AddWorkerCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand EditWorkerCommand { get; set; }
         public ICommand DeleteWorkerCommand { get; set; }
         public ICommand CancelCommand { get; set; }
+       
 
+  
         public Worker EditedWorker
         {
             get { return _editedWorker; }
@@ -48,7 +51,15 @@ namespace OpenDayApplication.Viewmodel
                 OnPropertyChanged("IsWorkerEditVisible");
             }
         }
-
+        public int RefreshWorkersCount
+        {
+            get { return _workerCount; }
+            set
+            {
+                _workerCount = value;
+                OnPropertyChanged("RefreshWorkersCount");
+            }
+        }
         public WorkersViewModel()
         {
             _workersManager = GetWorkersManagerr();
@@ -57,7 +68,7 @@ namespace OpenDayApplication.Viewmodel
             DeleteWorkerCommand = new BaseCommand(DeleteWorker);
             SaveCommand = new BaseCommand(SaveChanges);
             CancelCommand = new BaseCommand(Cancel);
-            RefreshWorkers();
+            
         }
 
         public void AddWorker()
@@ -65,6 +76,8 @@ namespace OpenDayApplication.Viewmodel
             IsWorkerEditVisible = true;
             _selectedOperation = CrudOperation.Create;
             EditedWorker = new Worker();
+            RefreshWorkers();
+            RefreshWorkers_number();
         }
 
         public void EditWorker()
@@ -118,6 +131,20 @@ namespace OpenDayApplication.Viewmodel
         private void RefreshWorkers()
         {
             Workers = new List<Worker>(_workersManager.GetWorkers());
+           
+        }
+
+        private void RefreshWorkers_number()
+        { 
+            if(_workers != null)
+            {
+                RefreshWorkersCount = _workers.Count;
+            }
+            else
+            {
+                RefreshWorkersCount = 0;
+            }
+                  
         }
     }
 }
